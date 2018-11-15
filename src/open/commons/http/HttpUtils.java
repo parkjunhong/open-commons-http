@@ -257,7 +257,7 @@ public class HttpUtils {
      *
      */
     public static ResponseClient doDelete(String host, int port, String url, final Map<String, ?> parameters) {
-        return doRequest(HttpMethod.DELETE, host, port, url, new HttpRequestBaseHelper(parameters));
+        return doRequest(HttpMethod.DELETE, host, port, url, new open.commons.http.HttpRequestBaseHelper(parameters));
     }
 
     /**
@@ -271,7 +271,7 @@ public class HttpUtils {
      * @deprecated Use {@link #doRequest(HttpMethod, String, int, String, AbstractDoRequestHelper)} instead of.
      */
     public static ResponseClient doGet(String host, int port, String url, final Map<String, Object> parameters) {
-        return doRequest(HttpMethod.GET, host, port, url, new HttpRequestBaseHelper(parameters));
+        return doRequest(HttpMethod.GET, host, port, url, new open.commons.http.HttpRequestBaseHelper(parameters));
     }
 
     /**
@@ -285,7 +285,7 @@ public class HttpUtils {
      * @deprecated Use {@link #doRequest(HttpMethod, String, int, String, AbstractDoRequestHelper)} instead of.
      */
     public static ResponseClient doHead(String host, int port, String url, final Map<String, Object> parameters) {
-        return doRequest(HttpMethod.HEAD, host, port, url, new HttpRequestBaseHelper(parameters));
+        return doRequest(HttpMethod.HEAD, host, port, url, new open.commons.http.HttpRequestBaseHelper(parameters));
     }
 
     /**
@@ -299,7 +299,7 @@ public class HttpUtils {
      * @deprecated Use {@link #doRequest(HttpMethod, String, int, String, AbstractDoRequestHelper)} instead of.
      */
     public static ResponseClient doOptions(String host, int port, String url, final Map<String, Object> parameters) {
-        return doRequest(HttpMethod.OPTIONS, host, port, url, new HttpRequestBaseHelper(parameters));
+        return doRequest(HttpMethod.OPTIONS, host, port, url, new open.commons.http.HttpRequestBaseHelper(parameters));
     }
 
     /**
@@ -313,7 +313,7 @@ public class HttpUtils {
      * @deprecated Use {@link #doRequest(HttpMethod, String, int, String, AbstractDoRequestHelper)} instead of.
      */
     public static ResponseClient doPatch(String host, int port, String url, final String json) {
-        return doRequest(HttpMethod.PATCH, host, port, url, new HttpJSONEntityRequestBaseHelper(json));
+        return doRequest(HttpMethod.PATCH, host, port, url, new open.commons.http.HttpJSONEntityRequestBaseHelper(json));
     }
 
     /**
@@ -327,7 +327,7 @@ public class HttpUtils {
      * @deprecated Use {@link #doRequest(HttpMethod, String, int, String, AbstractDoRequestHelper)} instead of.
      */
     public static ResponseClient doPost(String host, int port, String url, final String json) {
-        return doRequest(HttpMethod.POST, host, port, url, new HttpJSONEntityRequestBaseHelper(json));
+        return doRequest(HttpMethod.POST, host, port, url, new open.commons.http.HttpJSONEntityRequestBaseHelper(json));
     }
 
     /**
@@ -341,10 +341,10 @@ public class HttpUtils {
      * @deprecated Use {@link #doRequest(HttpMethod, String, int, String, AbstractDoRequestHelper)} instead of.
      */
     public static ResponseClient doPut(String host, int port, String url, final String json) {
-        return doRequest(HttpMethod.PUT, host, port, url, new HttpJSONEntityRequestBaseHelper(json));
+        return doRequest(HttpMethod.PUT, host, port, url, new open.commons.http.HttpJSONEntityRequestBaseHelper(json));
     }
 
-    public static ResponseClient doRequest(CloseableHttpClient client, HttpMethod method, String host, int port, String url, AbstractDoRequestHelper requestHelper) {
+    public static ResponseClient doRequest(CloseableHttpClient client, HttpMethod method, String host, int port, String url, open.commons.http.AbstractDoRequestHelper requestHelper) {
 
         HttpResponse response = null;
 
@@ -418,11 +418,11 @@ public class HttpUtils {
      * @return
      *
      */
-    public static ResponseClient doRequest(HttpMethod method, String host, int port, String url, AbstractDoRequestHelper requestHelper) {
+    public static ResponseClient doRequest(HttpMethod method, String host, int port, String url, open.commons.http.AbstractDoRequestHelper requestHelper) {
         return doRequest0(method, host, port, url, requestHelper, false);
     }
 
-    private static ResponseClient doRequest0(HttpMethod method, String host, int port, String url, AbstractDoRequestHelper requestHelper, boolean isHttps) {
+    private static ResponseClient doRequest0(HttpMethod method, String host, int port, String url, open.commons.http.AbstractDoRequestHelper requestHelper, boolean isHttps) {
 
         HttpResponse response = null;
 
@@ -505,12 +505,12 @@ public class HttpUtils {
      *
      * @since 2016. 11. 21.
      */
-    public static ResponseClient doRequestViaHttps(HttpMethod method, String host, int port, String url, AbstractDoRequestHelper requestHelper) {
+    public static ResponseClient doRequestViaHttps(HttpMethod method, String host, int port, String url, open.commons.http.AbstractDoRequestHelper requestHelper) {
         return doRequest0(method, host, port, url, requestHelper, true);
     }
 
     public static ResponseClient doTrace(String host, int port, String url, final Map<String, Object> parameters) {
-        return doRequest(HttpMethod.TRACE, host, port, url, new HttpRequestBaseHelper(parameters));
+        return doRequest(HttpMethod.TRACE, host, port, url, new open.commons.http.HttpRequestBaseHelper(parameters));
     }
 
     public static List<NameValuePair> mapToParameters(Map<String, ?> paramsMap) {
@@ -766,6 +766,14 @@ public class HttpUtils {
         return false;
     }
 
+    /**
+     * 
+     * 
+     * @since 2015. 1. 6.
+     * @author Park_Jun_Hong_(fafanmama_at_naver_com)
+     * 
+     * @deprecated Use {@link open.commons.http.AbstractDoRequestHelper} instead of.
+     */
     public static abstract class AbstractDoRequestHelper {
 
         public void afterHttpRequest(HttpRequestBase request) {
@@ -787,6 +795,14 @@ public class HttpUtils {
         }
     }
 
+    /**
+     * 
+     * 
+     * @since 2015. 1. 6.
+     * @author Park_Jun_Hong_(fafanmama_at_naver_com)
+     * 
+     * @deprecated Use {@link open.commons.http.HttpJSONEntityRequestBaseHelper} instead of.
+     */
     public static class HttpJSONEntityRequestBaseHelper extends AbstractDoRequestHelper {
 
         private String json;
@@ -848,18 +864,5 @@ public class HttpUtils {
             List<NameValuePair> params = mapToParameters(parameters);
             builder.addParameters(params);
         }
-    }
-
-    public static void main(String[] args) {
-        ResponseClient resClient = doRequestViaHttps(HttpMethod.GET, "39.119.118.142", 9000, "/api/complex-reports/download?token=422d7280-74c6-4a49-a2be-de72b4d8ec3c",
-                new DefaultHttpRequestHelper());
-
-        StatusLine statusLine = resClient.getResponse().getStatusLine();
-
-        System.out.println("status: " + statusLine.getReasonPhrase());
-
-        String response = readResponseEntity(resClient);
-
-        System.out.println(response);
     }
 }

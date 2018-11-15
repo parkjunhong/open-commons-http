@@ -39,8 +39,8 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ByteArrayEntity;
 
+import open.commons.http.AbstractDoRequestHelper;
 import open.commons.http.HttpUtils;
-import open.commons.http.HttpUtils.AbstractDoRequestHelper;
 
 /**
  * 
