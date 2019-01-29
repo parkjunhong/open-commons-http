@@ -35,6 +35,8 @@ import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.charset.Charset;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +87,8 @@ import org.apache.http.impl.conn.SystemDefaultDnsResolver;
 import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.message.BasicStatusLine;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import open.commons.http.helper.DefaultHttpRequestHelper;
 
@@ -96,7 +99,7 @@ import open.commons.http.helper.DefaultHttpRequestHelper;
  */
 public class HttpUtils {
 
-    private static Logger log = Logger.getLogger(HttpUtils.class);
+    private static Logger log = LogManager.getLogger(HttpUtils.class);
 
     /**
      * {@link AutoCloseable}를 모두 닫는다.
@@ -187,25 +190,20 @@ public class HttpUtils {
                 .setDefaultRequestConfig(reqConfig) //
                 .setConnectionManager(manager);
 
-        // // start - Set Credentials : 2014. 3. 27., Park_Jun_Hong_(fafanmama_at_naver_com)
-        // DefaultCredentialsProvider crProvider = new DefaultCredentialsProvider();
-        // Credentials credentials = new UsernamePasswordCredentials(userName, password)
-        // crProvider.setCredentials(AuthScope.ANY, credentials);
-        //
-        // builder.setDefaultCredentialsProvider(crProvider);
-        // // end - Set Credentials : 2014. 3. 27.
         CloseableHttpClient client = httpClientBuilder.build();
 
         return client;
     }
 
-    private static CloseableHttpClient createHttpsClient() {
+    private static CloseableHttpClient createHttpsClient() throws KeyManagementException, KeyStoreException {
 
         // Lookup
         RegistryBuilder<ConnectionSocketFactory> regBuilder = RegistryBuilder.create();
 
         try {
             SSLContext sslContext = SSLContext.getDefault();
+            // sslContext = new SSLContextBuilder().loadTrustMaterial(null, (certificate, authType) -> true).build();
+            // regBuilder.register("https", new SSLConnectionSocketFactory(sslContext, new NoopHostnameVerifier()));
             regBuilder.register("https", new SSLConnectionSocketFactory(sslContext));
             regBuilder.register("http", new PlainConnectionSocketFactory());
         } catch (NoSuchAlgorithmException e) {
@@ -344,7 +342,8 @@ public class HttpUtils {
         return doRequest(HttpMethod.PUT, host, port, url, new open.commons.http.HttpJSONEntityRequestBaseHelper(json));
     }
 
-    public static ResponseClient doRequest(CloseableHttpClient client, HttpMethod method, String host, int port, String url, open.commons.http.AbstractDoRequestHelper requestHelper) {
+    public static ResponseClient doRequest(CloseableHttpClient client, HttpMethod method, String host, int port, String url,
+            open.commons.http.AbstractDoRequestHelper requestHelper) {
 
         HttpResponse response = null;
 
@@ -466,11 +465,13 @@ public class HttpUtils {
             requestHelper.afterHttpRequest(httpRequest);
 
             // host
-            HttpHost httpHost = new HttpHost(host, port);
+            HttpHost httpHost = null;
 
             if (isHttps) {
+                httpHost = new HttpHost(host, port, "https");
                 client = createHttpsClient();
             } else {
+                httpHost = new HttpHost(host, port);
                 client = createClient();
             }
 

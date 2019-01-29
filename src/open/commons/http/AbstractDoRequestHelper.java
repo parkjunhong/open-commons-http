@@ -29,7 +29,8 @@ package open.commons.http;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.utils.URIBuilder;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * 
@@ -37,8 +38,8 @@ import org.apache.log4j.Logger;
  * @author Park_Jun_Hong_(fafanmama_at_naver_com)
  */
 public class AbstractDoRequestHelper {
-    
-    private Logger log = Logger.getLogger(getClass());
+
+    protected Logger logger = LogManager.getLogger(getClass());
 
     /**
      * 
@@ -47,6 +48,26 @@ public class AbstractDoRequestHelper {
     public AbstractDoRequestHelper() {
     }
 
+    /**
+     * Set following header.<br>
+     * <ul>
+     * <li>http.useragent: HttpClient
+     * <li>Accept: application/json
+     * <li>Content-Type: application/json;charset=UTF-8
+     * </ul>
+     * <br>
+     * 
+     * <pre>
+     * [개정이력]
+     *      날짜    	| 작성자	|	내용
+     * ------------------------------------------
+     * 2018. 10. 15.		박준홍			최초 작성
+     * </pre>
+     *
+     * @param request
+     *
+     * @since 2018. 10. 15.
+     */
     public void afterHttpRequest(HttpRequestBase request) {
 
         request.setHeader("http.useragent", "HttpClient");

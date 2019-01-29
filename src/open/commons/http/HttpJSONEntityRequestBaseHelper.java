@@ -31,7 +31,6 @@ import java.io.UnsupportedEncodingException;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ByteArrayEntity;
-import org.apache.log4j.Logger;
 
 /**
  * 
@@ -39,8 +38,6 @@ import org.apache.log4j.Logger;
  * @author Park_Jun_Hong_(fafanmama_at_naver_com)
  */
 public class HttpJSONEntityRequestBaseHelper extends AbstractDoRequestHelper {
-
-    private Logger log = Logger.getLogger(getClass());
 
     private String json;
 
@@ -61,7 +58,7 @@ public class HttpJSONEntityRequestBaseHelper extends AbstractDoRequestHelper {
                     ByteArrayEntity entity = new ByteArrayEntity(json.getBytes("UTF-8"));
                     ((HttpEntityEnclosingRequestBase) request).setEntity(entity);
                 } catch (UnsupportedEncodingException e) {
-                    log.warn("Encoding is wrong.", e);
+                    logger.warn("Encoding is wrong.", e);
                 }
             }
         }

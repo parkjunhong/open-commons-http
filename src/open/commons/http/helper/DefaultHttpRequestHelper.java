@@ -255,7 +255,7 @@ public class DefaultHttpRequestHelper extends AbstractDoRequestHelper {
             try {
                 this.entity = string.getBytes("UTF-8");
             } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+                logger.error("", e);
             }
         }
     }
