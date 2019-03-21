@@ -290,6 +290,8 @@ public class DefaultHttpRequestHelper extends AbstractDoRequestHelper {
         reqBuilder.setSocketTimeout(socketTimeout) //
                 .setConnectTimeout(connectTimeout);
 
+        request.setConfig(reqBuilder.build());
+
         return reqBuilder;
     }
 }
