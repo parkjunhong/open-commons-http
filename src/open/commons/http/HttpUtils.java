@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Park Jun-Hong_(fafanmama_at_naver_com)
+ * Copyright 2011 Park Jun-Hong (parkjunhong77/gmail/com)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -510,6 +510,15 @@ public class HttpUtils {
         return doRequest0(method, host, port, url, requestHelper, true);
     }
 
+    /**
+     * @param host
+     * @param port
+     * @param url
+     * @param parameters
+     * @return
+     * 
+     * @deprecated Use {@link #doRequest(HttpMethod, String, int, String, AbstractDoRequestHelper)} instead of.
+     */
     public static ResponseClient doTrace(String host, int port, String url, final Map<String, Object> parameters) {
         return doRequest(HttpMethod.TRACE, host, port, url, new open.commons.http.HttpRequestBaseHelper(parameters));
     }
@@ -530,17 +539,6 @@ public class HttpUtils {
         }
 
         return parameters;
-    }
-
-    @SuppressWarnings({ "unused", "restriction" })
-    private static byte[] readFully(InputStream inStream) {
-        byte[] read = null;
-        try {
-            read = sun.misc.IOUtils.readFully(inStream, -1, false);
-        } catch (IOException ignored) {
-        }
-
-        return read;
     }
 
     /**
