@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>open.commons</groupId>
 	<artifactId>open-commons-http</artifactId>
-	<version>0.6.0-BUILD-SNAPSHOT</version>
+	<version>0.6.0</version>
 	<name>open-commons-http</name>
 
 	<distributionManagement>
@@ -105,7 +105,10 @@
 	</build>
 
 
-	<description>[2019/01/29]
+	<description>[2019/04/03]
+- Release: 0.6.0
+
+[2019/01/29]
 - Release: 0.6.0-BUILD-SNAPSHOT
 - Update
  + org.apache.httpcomponents:httpclient: 4.3.6 -&gt; 4.5.7
