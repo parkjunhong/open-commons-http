@@ -32,13 +32,12 @@ import java.util.Map;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URIBuilder;
 
-import open.commons.http.AbstractDoRequestHelper;
 import open.commons.http.helper.DefaultHttpRequestHelper;
 
 /**
  * 
  * @author Park_Jun_Hong_(fafanmama_at_naver_com)
- * @deprecated Use {@link DefaultHttpRequestHelper} instead of.
+ * @deprecated Use {@link DefaultHttpRequestHelper} instead of. Will be removed at next release.
  */
 public class HttpRequestBaseHelper extends AbstractDoRequestHelper {
 

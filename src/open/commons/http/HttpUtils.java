@@ -251,7 +251,8 @@ public class HttpUtils {
      * @param parameters
      * @return
      * 
-     * @deprecated Use {@link #doRequest(HttpMethod, String, int, String, AbstractDoRequestHelper)} instead of.
+     * @deprecated Use {@link #doRequest(HttpMethod, String, int, String, AbstractDoRequestHelper)} instead of. Will be
+     *             removed at next release.
      *
      */
     public static ResponseClient doDelete(String host, int port, String url, final Map<String, ?> parameters) {
@@ -266,7 +267,8 @@ public class HttpUtils {
      * @param parameters
      * @return
      *
-     * @deprecated Use {@link #doRequest(HttpMethod, String, int, String, AbstractDoRequestHelper)} instead of.
+     * @deprecated Use {@link #doRequest(HttpMethod, String, int, String, AbstractDoRequestHelper)} instead of. Will be
+     *             removed at next release.
      */
     public static ResponseClient doGet(String host, int port, String url, final Map<String, Object> parameters) {
         return doRequest(HttpMethod.GET, host, port, url, new open.commons.http.HttpRequestBaseHelper(parameters));
@@ -280,7 +282,8 @@ public class HttpUtils {
      * @param parameters
      * @return
      *
-     * @deprecated Use {@link #doRequest(HttpMethod, String, int, String, AbstractDoRequestHelper)} instead of.
+     * @deprecated Use {@link #doRequest(HttpMethod, String, int, String, AbstractDoRequestHelper)} instead of. Will be
+     *             removed at next release.
      */
     public static ResponseClient doHead(String host, int port, String url, final Map<String, Object> parameters) {
         return doRequest(HttpMethod.HEAD, host, port, url, new open.commons.http.HttpRequestBaseHelper(parameters));
@@ -294,7 +297,8 @@ public class HttpUtils {
      * @param parameters
      * @return
      *
-     * @deprecated Use {@link #doRequest(HttpMethod, String, int, String, AbstractDoRequestHelper)} instead of.
+     * @deprecated Use {@link #doRequest(HttpMethod, String, int, String, AbstractDoRequestHelper)} instead of. Will be
+     *             removed at next release.
      */
     public static ResponseClient doOptions(String host, int port, String url, final Map<String, Object> parameters) {
         return doRequest(HttpMethod.OPTIONS, host, port, url, new open.commons.http.HttpRequestBaseHelper(parameters));
@@ -308,7 +312,8 @@ public class HttpUtils {
      * @param parameters
      * @return
      *
-     * @deprecated Use {@link #doRequest(HttpMethod, String, int, String, AbstractDoRequestHelper)} instead of.
+     * @deprecated Use {@link #doRequest(HttpMethod, String, int, String, AbstractDoRequestHelper)} instead of. Will be
+     *             removed at next release.
      */
     public static ResponseClient doPatch(String host, int port, String url, final String json) {
         return doRequest(HttpMethod.PATCH, host, port, url, new open.commons.http.HttpJSONEntityRequestBaseHelper(json));
@@ -322,7 +327,8 @@ public class HttpUtils {
      * @param parameters
      * @return
      *
-     * @deprecated Use {@link #doRequest(HttpMethod, String, int, String, AbstractDoRequestHelper)} instead of.
+     * @deprecated Use {@link #doRequest(HttpMethod, String, int, String, AbstractDoRequestHelper)} instead of. Will be
+     *             removed at next release.
      */
     public static ResponseClient doPost(String host, int port, String url, final String json) {
         return doRequest(HttpMethod.POST, host, port, url, new open.commons.http.HttpJSONEntityRequestBaseHelper(json));
@@ -336,7 +342,8 @@ public class HttpUtils {
      * @param parameters
      * @return
      *
-     * @deprecated Use {@link #doRequest(HttpMethod, String, int, String, AbstractDoRequestHelper)} instead of.
+     * @deprecated Use {@link #doRequest(HttpMethod, String, int, String, AbstractDoRequestHelper)} instead of. Will be
+     *             removed at next release.
      */
     public static ResponseClient doPut(String host, int port, String url, final String json) {
         return doRequest(HttpMethod.PUT, host, port, url, new open.commons.http.HttpJSONEntityRequestBaseHelper(json));
@@ -517,7 +524,8 @@ public class HttpUtils {
      * @param parameters
      * @return
      * 
-     * @deprecated Use {@link #doRequest(HttpMethod, String, int, String, AbstractDoRequestHelper)} instead of.
+     * @deprecated Use {@link #doRequest(HttpMethod, String, int, String, AbstractDoRequestHelper)} instead of. Will be
+     *             removed at next release.
      */
     public static ResponseClient doTrace(String host, int port, String url, final Map<String, Object> parameters) {
         return doRequest(HttpMethod.TRACE, host, port, url, new open.commons.http.HttpRequestBaseHelper(parameters));
@@ -771,7 +779,7 @@ public class HttpUtils {
      * @since 2015. 1. 6.
      * @author Park_Jun_Hong_(fafanmama_at_naver_com)
      * 
-     * @deprecated Use {@link open.commons.http.AbstractDoRequestHelper} instead of.
+     * @deprecated Use {@link open.commons.http.AbstractDoRequestHelper} instead of. Will be removed at next release.
      */
     public static abstract class AbstractDoRequestHelper {
 
@@ -800,7 +808,8 @@ public class HttpUtils {
      * @since 2015. 1. 6.
      * @author Park_Jun_Hong_(fafanmama_at_naver_com)
      * 
-     * @deprecated Use {@link open.commons.http.HttpJSONEntityRequestBaseHelper} instead of.
+     * @deprecated Use {@link open.commons.http.HttpJSONEntityRequestBaseHelper} instead of. Will be removed at next
+     *             release.
      */
     public static class HttpJSONEntityRequestBaseHelper extends AbstractDoRequestHelper {
 
@@ -832,7 +841,7 @@ public class HttpUtils {
 
     /**
      * @author Park_Jun_Hong_(fafanmama_at_naver_com)
-     * @deprecated Use {@link DefaultHttpRequestHelper} instead of.
+     * @deprecated Use {@link DefaultHttpRequestHelper} instead of. Will be removed at next release.
      */
     public static class HttpRequestBaseHelper extends AbstractDoRequestHelper {
 

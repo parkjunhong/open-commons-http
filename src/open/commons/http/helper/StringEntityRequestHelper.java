@@ -44,7 +44,7 @@ import open.commons.http.HttpUtils.AbstractDoRequestHelper;
 /**
  * 
  * @author Park_Jun_Hong_(fafanmama_at_naver_com)
- * @deprecated Use {@link DefaultHttpRequestHelper} instead of.
+ * @deprecated Use {@link DefaultHttpRequestHelper} instead of. Will be removed at next release.
  */
 public class StringEntityRequestHelper extends AbstractDoRequestHelper {
 

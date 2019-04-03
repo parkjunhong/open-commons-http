@@ -18,13 +18,13 @@
  *
  * This file is generated under this project, "open-commons-http".
  *
- * Date  : 2018. 10. 15. 오전 4:30:51
+ * Date  : 2019. 4. 3. 오후 5:39:20
  *
  * Author: Park_Jun_Hong_(fafanmama_at_naver_com)
  * 
  */
 
-package open.commons.http;
+package open.commons.http.helper;
 
 import java.io.UnsupportedEncodingException;
 
@@ -32,12 +32,12 @@ import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ByteArrayEntity;
 
+import open.commons.http.AbstractDoRequestHelper;
+
 /**
  * 
- * @since 2018. 10. 15.
+ * @since 2019. 4. 3.
  * @author Park_Jun_Hong_(fafanmama_at_naver_com)
- * @deprecated Use {@link open.commons.http.helper.HttpJSONEntityRequestBaseHelper} instead of. Will be removed at next
- *             release.
  */
 public class HttpJSONEntityRequestBaseHelper extends AbstractDoRequestHelper {
 
@@ -65,4 +65,5 @@ public class HttpJSONEntityRequestBaseHelper extends AbstractDoRequestHelper {
             }
         }
     }
+
 }
