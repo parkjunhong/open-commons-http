@@ -6,6 +6,33 @@
 	<version>0.6.0</version>
 	<name>open-commons-http</name>
 
+	<properties>
+		<encoding>UTF-8</encoding>
+		<java-version>1.8</java-version>
+		
+		<compile.encoding-version>UTF-8</compile.encoding-version>
+		<compile.source-version>1.8</compile.source-version>
+		<compile.target-version>1.8</compile.target-version>
+
+		<!-- >>> begin: dependencies -->
+		<org.apache.httpcomponents.httpclient-version>4.5.7</org.apache.httpcomponents.httpclient-version>
+		<org.apache.logging.lo4j.log4j-core.version>2.7</org.apache.logging.lo4j.log4j-core.version>
+		<org.apache.logging.lo4j.log4j-api.version>2.7</org.apache.logging.lo4j.log4j-api.version>
+		<open-commons-core.version>1.6.5</open-commons-core.version>
+		<!-- <<< end: dependencies -->
+
+		<!-- >>> begin: plugin dependencies -->
+		<build.finalName>open-commons-http</build.finalName>
+		
+		<maven-eclipse-plugin.version>2.9</maven-eclipse-plugin.version>		
+		<maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
+		<maven-source-plugin.version>2.2.1</maven-source-plugin.version>
+		<maven-resources-plugin.version>3.0.1</maven-resources-plugin.version>
+		<maven-javadoc-plugin.version>3.0.1</maven-javadoc-plugin.version>
+		<maven-assembly-plugin.version>3.0.0</maven-assembly-plugin.version>
+		<!-- >>> end: plugin dependencies -->
+	</properties>
+
 	<distributionManagement>
 		<repository>
 			<id>releases</id>
@@ -19,25 +46,22 @@
 		</snapshotRepository>
 	</distributionManagement>
 
-	<properties>
-		<log4j-log4j.version>1.2.17</log4j-log4j.version>
-		<org.apache.httpcomponents.httpclient-version>4.5.7</org.apache.httpcomponents.httpclient-version>
-
-	</properties>
-
 	<dependencies>
-<!-- 		<dependency> -->
-<!-- 			<groupId>log4j</groupId> -->
-<!-- 			<artifactId>log4j</artifactId> -->
-<!-- 			<version>${log4j-log4j.version}</version> -->
-<!-- 		</dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>log4j</groupId> -->
+		<!-- <artifactId>log4j</artifactId> -->
+		<!-- <version>${log4j-log4j.version}</version> -->
+		<!-- </dependency> -->
 
+		<!-- >>> begin: http -->
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 			<version>${org.apache.httpcomponents.httpclient-version}</version>
 		</dependency>
+		<!-- <<< end: http -->
 
+		<!-- >>> begin: logging -->
 		<!-- https://mvnrepository.com/artifact/com.lmax/disruptor -->
 		<!-- for llog4j-2.x: making all asynchronous loggers -->
 		<dependency>
@@ -45,50 +69,74 @@
 			<artifactId>disruptor</artifactId>
 			<version>3.3.6</version>
 		</dependency>
-
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-api</artifactId>
-			<version>2.7</version>
-		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
-			<version>2.7</version>
+			<version>${org.apache.logging.lo4j.log4j-core.version}</version>
 		</dependency>
-		<!-- end: logging -->
-		<!-- ************** -->
-		<!-- ************** -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+			<version>${org.apache.logging.lo4j.log4j-api.version}</version>
+		</dependency>
+		<!-- <<< end: logging -->
+
+		<!-- >>> begin: junit -->
+		<!-- https://mvnrepository.com/artifact/junit/junit -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.hamcrest/hamcrest-core -->
+		<dependency>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest-core</artifactId>
+			<version>2.1</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- <<< end: junit -->
 
 	</dependencies>
 
 	<build>
+		<finalName>${build.finalName}</finalName>
 		<defaultGoal>install</defaultGoal>
-		<sourceDirectory>src</sourceDirectory>
+		<sourceDirectory>src/main/java</sourceDirectory>
 		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*.*</include>
+				</includes>
+			</resource>
 			<resource>
 				<directory>${project.basedir}</directory>
 				<includes>
-					<include>LICENSE.txt</include>
+					<include>LICENSE</include>
 				</includes>
 				<targetPath>META-INF</targetPath>
 			</resource>
 		</resources>
 		<plugins>
+			<!-- >>> begin: compile -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
+				<version>${maven-compiler-plugin.version}</version>
 				<configuration>
-					<encoding>UTF-8</encoding>
-					<source>1.7</source>
-					<target>1.7</target>
+					<encoding>${compile.encoding-version}</encoding>
+					<source>${compile.source-version}</source>
+					<target>${compile.target-version}</target>
 				</configuration>
 			</plugin>
+			<!-- <<< end: compile -->
+			<!-- >>> begin: source -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
-				<version>2.2.1</version>
+				<version>${maven-source-plugin.version}</version>
 				<configuration>
 					<encoding>UTF-8</encoding>
 				</configuration>
@@ -101,6 +149,25 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!-- <<< end: source -->
+			<!-- >>> begin: javadoc -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>${maven-javadoc-plugin.version}</version>
+				<configuration>
+					<goal>deploy</goal>
+					<show>private</show>
+					<nohelp>true</nohelp>
+					<additionalOptions>
+						<additionalOption>-Xdoclint:none</additionalOption>
+					</additionalOptions>
+					<charset>${encoding}</charset>
+					<docencoding>${encoding}</docencoding>
+					<encoding>${encoding}</encoding>
+				</configuration>
+			</plugin>
+			<!-- <<< end: javadoc -->
 		</plugins>
 	</build>
 
