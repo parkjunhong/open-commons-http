@@ -22,7 +22,7 @@
 		<!-- <<< end: dependencies -->
 
 		<!-- >>> begin: plugin dependencies -->
-		<build.finalName>open-commons-http</build.finalName>
+		<build.finalName>open-commons-http-${project.version}</build.finalName>
 		
 		<maven-eclipse-plugin.version>2.9</maven-eclipse-plugin.version>		
 		<maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
