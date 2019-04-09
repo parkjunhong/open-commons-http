@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>open.commons</groupId>
 	<artifactId>open-commons-http</artifactId>
-	<version>0.6.0</version>
+	<version>0.6.1</version>
 	<name>open-commons-http</name>
 
 	<properties>
@@ -172,7 +172,12 @@
 	</build>
 
 
-	<description>[2019/04/03]
+	<description>[2019/04/09]
+- Release: 0.6.1
+- Add
+ + open.commons.http.HttpUtils.doRequestViaHttps(HttpMethod, String, int, String, open.commons.http.AbstractDoRequestHelper, boolean)
+
+[2019/04/03]
 - Release: 0.6.0
 
 [2019/01/29]

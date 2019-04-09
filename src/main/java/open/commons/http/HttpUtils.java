@@ -43,7 +43,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -87,6 +89,7 @@ import org.apache.http.impl.conn.SystemDefaultDnsResolver;
 import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.message.BasicStatusLine;
+import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -195,20 +198,31 @@ public class HttpUtils {
         return client;
     }
 
-    private static CloseableHttpClient createHttpsClient() throws KeyManagementException, KeyStoreException {
+    /**
+     * 
+     * HTTPS 연결객체를 제공한다. <br>
+     * 
+     * <pre>
+     * [개정이력]
+     *      날짜    	| 작성자	|	내용
+     * ------------------------------------------
+     * 2016. 11. 21		박준홍			최초 작성
+     * 2019. 4. 9.		박준홍			최초 작성
+     * </pre>
+     *
+     * @param allowPrivateCA
+     * @return
+     * @throws KeyManagementException
+     * @throws KeyStoreException
+     * @throws NoSuchAlgorithmException
+     *
+     * @since 2019. 4. 9.
+     * @author Park_Jun_Hong_(fafanmama_at_naver_com)
+     */
+    private static CloseableHttpClient createHttpsClient(boolean allowPrivateCA) throws KeyManagementException, KeyStoreException, NoSuchAlgorithmException {
 
         // Lookup
-        RegistryBuilder<ConnectionSocketFactory> regBuilder = RegistryBuilder.create();
-
-        try {
-            SSLContext sslContext = SSLContext.getDefault();
-            // sslContext = new SSLContextBuilder().loadTrustMaterial(null, (certificate, authType) -> true).build();
-            // regBuilder.register("https", new SSLConnectionSocketFactory(sslContext, new NoopHostnameVerifier()));
-            regBuilder.register("https", new SSLConnectionSocketFactory(sslContext));
-            regBuilder.register("http", new PlainConnectionSocketFactory());
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
+        RegistryBuilder<ConnectionSocketFactory> regBuilder = createRegistryBuilder(allowPrivateCA);
 
         HttpConnectionFactory<HttpRoute, ManagedHttpClientConnection> connectionFactory = new ManagedHttpClientConnectionFactory();
 
@@ -241,6 +255,44 @@ public class HttpUtils {
         CloseableHttpClient client = httpClientBuilder.build();
 
         return client;
+    }
+
+    /**
+     * 
+     * <br>
+     * 
+     * <pre>
+     * [개정이력]
+     *      날짜    	| 작성자	|	내용
+     * ------------------------------------------
+     * 2019. 4. 9.		박준홍			최초 작성
+     * </pre>
+     *
+     * @param allowPrivateCA
+     *            사설인증서 자동 허용 여부
+     * @return
+     * @throws NoSuchAlgorithmException
+     * @throws KeyManagementException
+     * @throws KeyStoreException
+     *
+     * @since 2019. 4. 9.
+     * @author Park_Jun_Hong_(fafanmama_at_naver_com)
+     */
+    private static RegistryBuilder<ConnectionSocketFactory> createRegistryBuilder(boolean allowPrivateCA)
+            throws NoSuchAlgorithmException, KeyManagementException, KeyStoreException {
+        // Lookup
+        RegistryBuilder<ConnectionSocketFactory> regBuilder = RegistryBuilder.create();
+        if (allowPrivateCA) {
+            SSLContext sslContext = new SSLContextBuilder().loadTrustMaterial(null, (certificate, authType) -> true).build();
+            regBuilder.register("https", new SSLConnectionSocketFactory(sslContext, new AllowAllHostnameVerofier()));
+            regBuilder.register("http", new PlainConnectionSocketFactory());
+        } else {
+            SSLContext sslContext = SSLContext.getDefault();
+            regBuilder.register("https", new SSLConnectionSocketFactory(sslContext));
+            regBuilder.register("http", new PlainConnectionSocketFactory());
+        }
+
+        return regBuilder;
     }
 
     /**
@@ -425,10 +477,37 @@ public class HttpUtils {
      *
      */
     public static ResponseClient doRequest(HttpMethod method, String host, int port, String url, open.commons.http.AbstractDoRequestHelper requestHelper) {
-        return doRequest0(method, host, port, url, requestHelper, false);
+        return doRequest0(method, host, port, url, requestHelper, false, false);
     }
 
-    private static ResponseClient doRequest0(HttpMethod method, String host, int port, String url, open.commons.http.AbstractDoRequestHelper requestHelper, boolean isHttps) {
+    /**
+     * HTTP/HTTPS 요청을 처리한다. <br>
+     * 
+     * <pre>
+     * [개정이력]
+     *      날짜    	| 작성자	|	내용
+     * ------------------------------------------
+     * 2016. 11. 21		박준홍			최초 작성
+     * 2019. 4. 9.		박준홍			사설인증서 허용 기능 추가
+     * </pre>
+     *
+     * @param method
+     * @param host
+     * @param port
+     * @param url
+     * @param requestHelper
+     *            요청 도우미 객체
+     * @param isHttps
+     *            HTTPS 접속 여부
+     * @param allowPrivateCA
+     *            사설인증서 허용 여부
+     * @return
+     *
+     * @since 2019. 4. 9.
+     * @author Park_Jun_Hong_(fafanmama_at_naver_com)
+     */
+    private static ResponseClient doRequest0(HttpMethod method, String host, int port, String url, open.commons.http.AbstractDoRequestHelper requestHelper, boolean isHttps,
+            boolean allowPrivateCA) {
 
         HttpResponse response = null;
 
@@ -476,7 +555,7 @@ public class HttpUtils {
 
             if (isHttps) {
                 httpHost = new HttpHost(host, port, "https");
-                client = createHttpsClient();
+                client = createHttpsClient(allowPrivateCA);
             } else {
                 httpHost = new HttpHost(host, port);
                 client = createClient();
@@ -502,7 +581,14 @@ public class HttpUtils {
     }
 
     /**
-     * <b><code>DO NOT USE</code></b>
+     * HTTPS 요청을 처리한다.<br>
+     * 
+     * <pre>
+     * [개정이력]
+     *      날짜    	| 작성자	|	내용
+     * ------------------------------------------
+     * 2016. 11. 21.		박준홍			최초 작성
+     * </pre>
      * 
      * @param method
      * @param host
@@ -514,7 +600,33 @@ public class HttpUtils {
      * @since 2016. 11. 21.
      */
     public static ResponseClient doRequestViaHttps(HttpMethod method, String host, int port, String url, open.commons.http.AbstractDoRequestHelper requestHelper) {
-        return doRequest0(method, host, port, url, requestHelper, true);
+        return doRequest0(method, host, port, url, requestHelper, true, false);
+    }
+
+    /**
+     * HTTPS 요청을 처리한다.<br>
+     * 
+     * <pre>
+     * [개정이력]
+     *      날짜    	| 작성자	|	내용
+     * ------------------------------------------
+     * 2019. 4. 9.		박준홍			최초 작성
+     * </pre>
+     *
+     * @param method
+     * @param host
+     * @param port
+     * @param url
+     * @param requestHelper
+     * @param allowPrivateCA
+     * @return
+     *
+     * @since 2019. 4. 9.
+     * @author Park_Jun_Hong_(fafanmama_at_naver_com)
+     */
+    public static ResponseClient doRequestViaHttps(HttpMethod method, String host, int port, String url, open.commons.http.AbstractDoRequestHelper requestHelper,
+            boolean allowPrivateCA) {
+        return doRequest0(method, host, port, url, requestHelper, true, allowPrivateCA);
     }
 
     /**
@@ -755,7 +867,7 @@ public class HttpUtils {
         }
 
         return null;
-    };
+    }
 
     public static boolean sayOk(StatusLine statusLine, int... httpStatuses) {
 
@@ -771,7 +883,7 @@ public class HttpUtils {
         }
 
         return false;
-    }
+    };
 
     /**
      * 
@@ -800,6 +912,17 @@ public class HttpUtils {
 
         public void beforeHttpRequest(URIBuilder builder) {
         }
+    }
+
+    private static class AllowAllHostnameVerofier implements HostnameVerifier {
+        /**
+         * @see javax.net.ssl.HostnameVerifier#verify(java.lang.String, javax.net.ssl.SSLSession)
+         */
+        @Override
+        public boolean verify(String hostname, SSLSession session) {
+            return true;
+        }
+
     }
 
     /**
